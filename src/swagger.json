@@ -1,0 +1,187 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Desafio01 Documentation",
+        "description": "Api para registro e controle de usuários.",
+        "version": "1.0.0", 
+        "contact": {
+            "email": "juliocesar9804@hotmail.com"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Create a new user",
+                "description": "Create a new user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "$ref": "#/components/schemas/User"
+                                },
+                                "example": {
+                                    "name": "usernameExemple",
+                                    "email": "email@exemple.com"
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/User"
+                                
+                            }
+                        }
+                    }
+                    },
+                "400": {
+                    "description": "User already Exists"
+                    }
+                }
+            },
+            "get":{
+                "tags": ["ShowAllUsers"],
+                "summary": "Show only one user profile to an admin",
+                "description": "Show only one user profile to an admin",
+                "parameters":[
+                    {
+                        "name": "user_id",
+                        "in": "header",
+                        "description": "id do usuário para a busca",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                    
+                                }
+                            }
+                        }
+                        }
+                }
+
+            }
+            
+
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": ["ShowUserProfile"],
+                "summary": "Show only one user profile",
+                "description": "Show only one user profile",
+                "parameters":[
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "id do usuário para a busca",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                    
+                                }
+                            }
+                        }
+                        }
+                }
+            }
+        },
+        "/users/{user_id}/admin": {
+            "patch": {
+                "tags": ["TurnAdmin"],
+                "summary": "Turns a user into admin",
+                "description": "Turns a user into admin",
+                "parameters": [
+                    {
+                    "in": "path",
+                    "name": "user_id",
+                    "required":true
+                    }
+                ],
+                "schema": {
+                    "type": "string"
+                },
+                
+                "requestParameters":{
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                        }
+                                },
+                                "example": {
+                                    "{user_id}": "user's id example"
+                            }
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "201": {
+                    "description": "Success",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/User"
+                                
+                            }
+                        }
+                    }
+                    
+                }
+            },
+                "500":{
+                    "description": "User doesn't exists"
+                }
+            }
+        
+        }
+    },
+    "components": {
+        "schemas":{
+            "User": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type":"string"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "admin": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        }
+    }
+}
